@@ -1,0 +1,37 @@
+
+
+0. Untar the SmartGuide.tar.gz 
+
+1. Run all the following commands in the host computer
+
+>> cd master_kernel
+>> make clean && make
+
+>> cd ../master_user
+>> make clean && make
+
+>> cd ../slave_kernel
+>> make clean && make
+
+>> cd ../slave_user
+>> make clean && make
+
+2. Run minicom on 2 computers which are connected to the 2 gumstix boards
+
+3. Copy the kernel modules (mygpio.ko and mygpio2.ko) and user application (master_listen) into the master gumstix
+
+4. Copy the kernel module (mygpio.ko) and user application (slave_ul) into the slave gumstix
+
+5. Establish an rfcomm connection (bluetooth) between the 2 gumstix boards from the master gumstix
+>> rfcomm -r connect 0 <Slave_MAC_ID> 1 &
+
+6. To pair the audio bluetooth device with the default passkey, enter the command in the master gumstix
+>> passkey-agent 0000 <audio_device_MAC_ID> &
+
+7. Insert the kernel module and run the user application in the slave gumstix board
+>> insmod mygpio.ko
+>> ./slave_ul
+
+8. Insert the 2 kernel modules and run the user application in the master gumstix board
+>> insmod mygpio.ko && insmod mygpio2.ko
+>> ./master_listen
